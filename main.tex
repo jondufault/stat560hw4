@@ -1,0 +1,219 @@
+%  --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+ 
+\documentclass[12pt,a4paper]{article}
+ %appendix
+\usepackage[title,titletoc,toc]{appendix}
+
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{mdframed}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.11}
+\usetikzlibrary{fillbetween}
+ \usepackage{graphicx}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\usepackage{float}
+\usepackage[english=true]{SASnRdisplay}
+\usepackage{listings}
+\usepackage{auto-pst-pdf}
+\usepackage{cancel}
+\usepackage{longtable}
+\usepackage{mathtools}
+\usepackage{amstext}    % defines the \text command, needed here
+\usepackage{array}      % for advanced column specification: use >{\command} for
+                        % commands executed right before each column element
+                        % and <{\command} for commands to be executed right after
+                        % each column element
+
+\lstdefinestyle{sas-markup}{
+language = SAS,
+keywordstyle = \bfseries\color{blue},
+comment = [s]{/*}{*/},
+commentstyle = \slshape\footnotesize,
+}
+
+\newcommand\vstrike[1]{\stackon{#1}{\smash{\rule[-3pt]{1pt}{2.9ex}}}}
+
+\newcommand\ssigma{\vstrike{\Sigma}}
+%\usepackage[nomarkers,figuresonly]{endfloat}
+
+\lstdefinestyle{sas-code-user}{
+commentstyle = \normalfont\slshape\ttfamily\footnotesize\color{green},
+}
+
+\providecommand{\e}[1]{\ensuremath{\times 10^{#1}}}
+
+\newcommand\parti[1]{\frac{\partial}{\partial #1}}
+
+\newcommand{\oo}[1]{\operatorname{#1}}
+%\newcommand{\parti}[1]{\frac{\partial}{\partial #1}}
+
+\usepackage{tikz}
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{question}[2][Question]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{solution}
+               {\let\oldqedsymbol=\qedsymbol
+                \renewcommand{\qedsymbol}{$\blacktriangleleft$}
+                \begin{proof}[Solution]}
+               {\end{proof}
+                \renewcommand{\qedsymbol}{\oldqedsymbol}}
+\newcommand{\bb}[1]{{\bfseries #1}}
+
+\let\tempone\itemize
+\let\temptwo\enditemize
+\renewenvironment{itemize}{\tempone\addtolength{\itemsep}{-0.5\baselineskip}}{\temptwo}
+ 
+ 
+ 
+ 
+\input{SASPreamble.tex}
+ 
+\begin{document}
+
+
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+ 
+\title{Homework 3}%replace X with the appropriate number
+\author{Jonathan Dufault, 007497462\\ %replace with your name
+Stat 560} %if necessary, replace with your course title
+ 
+\maketitle
+
+\begin{problem}{1}
+Compute the variance.
+\end{problem}
+
+
+\begin{problem}{2}
+Let $X_{(j)}$ $j=1,2,3$ be a sample from a population with unknown distribution. The distribution of the bootstrap statistic $X^{*}_{(2)}$ is given below:
+
+\begin{tabular}{c|c}
+value & probability\\
+\hline
+$X_{(1)}$ & $\frac{7}{27}$\\
+$X_{(2)}$ & $\frac{13}{27}$\\
+$X_{(3)}$ & $\frac{7}{27}$\\
+\end{tabular}
+
+Prove that the formula
+\begin{equation*}
+    \operatorname{P}\left(X^{*}_{(m)} > X_{(l)}\right)=\sum_{j=0}^{m-1} {n \choose j } \left(\frac{l}{n}\right)^j \left(\frac{n-l}{n}\right)^{n-j}
+    
+    Alright. We need to convert this formula from an inequality to an equality.
+    
+    \begin{align*}
+    \operatorname{P}\left(X^{*}_{(m)} = X_{(l)}\right)&=\operatorname{P}\left(X^{*}_{(m)} > X_{(l-1)}\right) -\operatorname{P}\left(X^{*}_{(m)} > X_{(l)}\right)\\
+    &=\sum_{j=0}^{m-1} {n \choose j } \left(\frac{l-1}{n}\right)^j \left(\frac{n-(l-1)}{n}\right)^{n-j}  -\sum_{j=0}^{m-1} {n \choose j } \left(\frac{l}{n}\right)^j \left(\frac{n-l}{n}\right)^{n-j} \\
+    &=\sum_{j=0}^{m-1} {n \choose j } \left[\left(\frac{l-1}{n}\right)^j \left(\frac{n-(l-1)}{n}\right)^{n-j}  -\left(\frac{l}{n}\right)^j \left(\frac{n-l}{n}\right)^{n-j} \right]\\
+    &=\frac{1}{n^n}\sum_{j=0}^{m-1} {n \choose j } \left[\left(l-1\right)^j \left(n-(l-1)\right)^{n-j}  -\left(l\right)^j \left(n-l\right)^{n-j} \right]\\
+\end{align*}
+
+Alright. Let's do this thing. $m=2$ and $l$ varies. Let's make a simpler form of the above equation for $m=2$ and $n=3$:
+
+\begin{align*}
+    P(L=l) &=\frac{1}{n^n}\sum_{j=0}^{m-1} {n \choose j } \left[\left(l-1\right)^j \left(n-(l-1)\right)^{n-j}  -\left(l\right)^j \left(n-l\right)^{n-j} \right]\\
+    &=\frac{1}{27}\sum_{j=0}^{1} {n \choose j } \left[\left(l-1\right)^j \left(n-(l-1)\right)^{n-j}  -\left(l\right)^j \left(n-l\right)^{n-j} \right]\\
+    &=\frac{1}{27} {3 \choose 0 } \left[\left(l-1\right)^0 \left(4-1\right)^{3}  -\left(l\right)^0 \left(3-l\right)^{3} \right] + \frac{1}{27}{3 \choose 1 } \left[\left(l-1\right)^1\left(4-l)\right)^{2}  -\left(l\right)^1 \left(3-l\right)^{2} \right]\\
+    &=\frac{1}{27}  \left[ \left(4-1\right)^{3}  - \left(3-l\ri ght)^{3} + 3\left(l-1\right)^1\left(4-l)\right)^{2}  -3\left(l\right)^1 \left(3-l\right)^{2} \right]\\
+ \right]\\
+\end{align*}
+
+Alright. Now let's compute the probabilities. 
+\begin{itemize}
+\item[l=1:] 
+\begin{align*}
+    \frac{1}{27}  \left[ 3^3 - 2^3  3(1)(2^2)]\\
+    &= \frac{1}{27} \left[ 27-8-12\right]\\
+    &=\frac{7}{27}
+\end{align*}
+yaay.
+
+\item[l=2:] 
+\begin{align*}
+    \frac{1}{27}  \left[ 2^3 - 1^3 + 3\times1\times2^2 - 3\times2\times1]\\
+    &= \frac{1}{27} \left[ 8 -1 + 12 - 6\right]\\
+    &=\frac{13}{27}
+\end{align*}
+yaay.
+
+\item[l=3]
+
+
+\begin{align*}
+    \frac{1}{27}  \left[ 1 -0+3\times2\times1 - 3\times0]\\
+    &= \frac{1}{27} \left[1+ 6\right]\\
+    &=\frac{7}{27}
+\end{align*}
+yaay.
+\end{itemize}
+\end{problem}
+
+\begin{problem}{3}
+Discuss the estimation vs approximation method of constructing a confidence interval for $\overline{X}$, when the underlying population is exponential.
+\end{problem}
+
+\begin{itemize}
+\item[exact]
+
+If the underlying population is exponential, we want to find $a$, $b$ so that $P(a<\overline{X} < b)$. The general strategy is to use algebra to get to a pivotal distribution. My favorite so far has been turning it into a chi square distribution.
+
+We know that for $X_i \sim exp(\theta)$, that $\sum_{i} X_i \sim \Gamma(n,\theta)$, and $k\sum_{i} X_i \sim \Gamma(n,k\theta)$. 
+
+For a random variable $\chi^2_{n}$ that follows a chi-square distribution, we know that $\chi^2_{n}$ is also $ \sim \Gamma(n/2,2)$, so to get the pivot. Because all the exponential variables are greater than 0, I think that  it doesn't make sense to do a two sided confidence interval. Whatever.
+
+\begin{align*}
+    1-\alpha &= P(a<\overline{X}<b) \\
+    &= P(a < \frac{1}{n} \sum X_i < b) \\
+    &= P(na < \sum X_i < nb)\\
+    &= P(\frac{2na}{\theta}< \frac{2 \sum_i X_i}{\theta} < \frac{2nb}{\theta})\\
+    &=P(\frac{2na}{\theta}< \chi^2_{2n} < \frac{2nb}{\theta})\\
+\end{align*}
+
+Alright. With $2n$ understood, we define $\chi^2_{\alpha/2$ and $\chi^2_{1-\alpha/2}$ to be the inverse CDF at the critical values.
+
+\begin{align*}
+    \frac{2nb}{\theta} &= \chi^2_{\alpha/2} \\
+    2nb &= \chi^2_{\alpha/2}\theta \\
+    b &= \frac{\chi^2_{\alpha/2}\theta}{2n}\\
+    \hat{b} &= \frac{\chi^2_{\alpha/2}}{2n\overline{X}}\\
+    &= \frac{\chi^2_{\alpha/2}}{2\sum_i X_i}\\
+\end{align*}
+
+You'd do similar algebra for $a$, to get a confidence interval of:
+
+\[ \left(\frac{\chi^2_{1-\alpha/2}}{2\sum_i X_i},\frac{\chi^2_{\alpha/2}}{2\sum_i X_i}\right)\]
+
+\item[approximate(1)]
+
+To approximate this parametrically, we first notice that $\overline{X} = \frac{1}{n}\sum_i X_i$ comes directly from the statement of the central limit theorem, which means that the quantity $\frac{\overline{X} - \mu}{\sigma/\sqrt{n}} \approx Z$. We use the t-distribution to approximate. 
+
+The confidence interval will be:
+
+\[\overline{X} \pm t_{n-1;\alpha/2}s/\sqrt{n}\]
+
+\item[{\bf bootstrap}]
+
+Now's the fun one. We have an eCDF $\hat{F}(x) = \frac{1}{n}\sum_{i} \operatorname{I}(X_i < x)$
+
+
+\end{itemize}
+
+
+
+\end{document}u
